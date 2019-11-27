@@ -6,3 +6,20 @@ This repo contains code for my blog post explaining how to use gRPC in Go and Py
 
 The code in this repo is released under the terms of MIT License
 
+# How to run
+
+Terminal 1 (python server):
+```
+brew install python
+pip3 install virtualenv
+virtualenv -p python3 venv
+pip install -r requirements.txt
+source venv/bin/activate
+python python/server.py
+```
+
+Terminal 2 (Go client):
+```
+cd golang
+go run client.go
+```

@@ -1,13 +1,11 @@
+import time
+from concurrent import futures
+
+from nltk.corpus import stopwords
+
 from nltk_service_pb2 import *
 from nltk_service_pb2_grpc import *
 
-import grpc
-import time
-import nltk
-import string
-from concurrent import futures
-from nltk.corpus import stopwords
-import re
 
 class NltkService(KeywordServiceServicer):
 
