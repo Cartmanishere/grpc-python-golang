@@ -1,21 +1,24 @@
 package main
 
 import (
-	"context"
-	"google.golang.org/grpc"
-	"fmt"
 	"bufio"
+	"context"
+	nltk "example.com/nltk_service"
+	"fmt"
+	"google.golang.org/grpc"
 	"os"
-	nltk "golang/nltk_service"
 )
 
+//GrpcClient client
 type GrpcClient struct {
-	conn 	*grpc.ClientConn
-	client 	nltk.KeywordServiceClient
+	conn   *grpc.ClientConn
+	client nltk.KeywordServiceClient
 }
 
+//SERVER_ADDR is the server address
 const SERVER_ADDR = "127.0.0.1:6000"
 
+//InitGrpcConnection - initialize connection
 func InitGrpcConnection() (*GrpcClient, error) {
 	conn, err := grpc.Dial(SERVER_ADDR, grpc.WithInsecure())
 	if err != nil {
@@ -25,16 +28,15 @@ func InitGrpcConnection() (*GrpcClient, error) {
 	return &GrpcClient{conn, client}, nil
 }
 
+//MyKeywords call gRPC method in server
 func (g *GrpcClient) MyKeywords(text string) ([]string, error) {
 	req := nltk.Request{
 		Text: text,
 	}
-
 	res, err := g.client.GetKeywords(context.Background(), &req)
 	if err != nil {
 		return nil, err
 	}
-	
 	return res.Keywords, nil
 }
 
@@ -43,13 +45,12 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(0)
-	} 
-
+	}
 	reader := bufio.NewReader(os.Stdin)
-	
+
 	for {
 		fmt.Println("Enter some text: ")
-		text, _ := reader.ReadString('\n') 
+		text, _ := reader.ReadString('\n')
 		fmt.Println("Keywords:")
 		keywords, err := client.MyKeywords(text)
 		if err != nil {
